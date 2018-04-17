@@ -47,8 +47,15 @@ function generate_addresses(seed)
 	    	{
 	    		ks.generateNewAddress(pwDerivedKey, totalAddresses);
 	    		var addresses = ks.getAddresses();	
-	    		
-	    		var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+				
+			    var provider = new HookedWeb3Provider({
+  					//host: "http://localhost:8545",
+					host: "https://rinkeby.infura.io/",
+					//host: "https://etherscan.io/",
+  					transaction_signer: ks
+				}); 
+
+			    var web3 = new Web3(provider);			
 
 	    		var html = "";
 
@@ -101,7 +108,9 @@ function send_ether()
 			    };
 
 			    var provider = new HookedWeb3Provider({
-  					host: "http://localhost:8545",
+  					//host: "http://localhost:8545",
+					host: "https://rinkeby.infura.io/",
+					//host: "https://etherscan.io/",
   					transaction_signer: ks
 				});
 
