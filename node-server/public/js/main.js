@@ -30,7 +30,14 @@ function generate_addresses(seed)
 		return;
 	}
 
-	var password = Math.random().toString();
+	//var password = Math.random().toString();
+	var password = 'ab123456';
+ 
+	if (password == '') {
+	  password = prompt('Enter password to retrieve addresses', 'Password');
+	}	
+ 
+	
 	var hdPathString = "m/44'/60'/0'/0";
 
 	lightwallet.keystore.createVault({
@@ -49,9 +56,9 @@ function generate_addresses(seed)
 	    		var addresses = ks.getAddresses();	
 				
 			    var provider = new HookedWeb3Provider({
-  					//host: "http://localhost:8545",
-					host: "https://rinkeby.infura.io/",
-					//host: "https://etherscan.io/",
+  					//host: "http://localhost:8545",				// 私链
+					host: "https://rinkeby.infura.io/",				// 以太坊测试
+					//host: "https://api.myetherapi.com/eth",
   					transaction_signer: ks
 				}); 
 
@@ -108,9 +115,9 @@ function send_ether()
 			    };
 
 			    var provider = new HookedWeb3Provider({
-  					//host: "http://localhost:8545",
-					host: "https://rinkeby.infura.io/",
-					//host: "https://etherscan.io/",
+  					//host: "http://localhost:8545",				// 私链
+					host: "https://rinkeby.infura.io/",				// 以太坊测试
+					//host: "https://api.myetherapi.com/eth",
   					transaction_signer: ks
 				});
 
