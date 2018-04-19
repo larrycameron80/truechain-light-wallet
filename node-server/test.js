@@ -7,14 +7,14 @@ http.createServer(function(req, res) {
 	
     var web3 = new Web3();
 	//web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));		// 本地私链，测试网络
-    web3.setProvider(new web3.providers.HttpProvider('https://rinkeby.infura.io/'));	// 以太坊测试链接
-	//web3.setProvider(new web3.providers.HttpProvider('https://api.myetherapi.com/rop'));	// 以太坊测试
+    //web3.setProvider(new web3.providers.HttpProvider('https://rinkeby.infura.io/'));	// 以太坊测试链接
+	web3.setProvider(new web3.providers.HttpProvider('https://mainnet.infura.io/'));	// 以太坊正式网
 	
 	//console.log(web3.eth.accounts[0]);
-	var address = "0x9588ba431d63e03cb17db8e2f35d0882289049f7";
+	var address = "0xc2892D1E69e4A337fEd0adA162B2eBC7dd3444a9";
 	console.log(address); 
     var balance = web3.fromWei(web3.eth.getBalance(address), 'ether');
-	console.log(balance); 
+	console.log(balance);  
  
 	
     res.write('<h2>');

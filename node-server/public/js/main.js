@@ -57,8 +57,9 @@ function generate_addresses(seed)
 				
 			    var provider = new HookedWeb3Provider({
   					//host: "http://localhost:8545",				// 私链
-					host: "https://rinkeby.infura.io/",				// 以太坊测试
-					//host: "https://api.myetherapi.com/eth",
+					//host: "https://rinkeby.infura.io/",				// 以太坊测试
+					host: "https://ropsten.infura.io/",				// 以太坊测试 (ropsten)
+					//host: "https://mainnet.infura.io/",					// 以太坊正式网
   					transaction_signer: ks
 				}); 
 
@@ -116,8 +117,9 @@ function send_ether()
 
 			    var provider = new HookedWeb3Provider({
   					//host: "http://localhost:8545",				// 私链
-					host: "https://rinkeby.infura.io/",				// 以太坊测试
-					//host: "https://api.myetherapi.com/eth",
+					//host: "https://rinkeby.infura.io/",				// 以太坊测试
+					host: "https://ropsten.infura.io/",				// 以太坊测试 (ropsten)
+					//host: "https://mainnet.infura.io/",					// 以太坊正式网
   					transaction_signer: ks
 				});
 
