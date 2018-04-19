@@ -13,7 +13,8 @@
       function setWeb3Provider(keystore) {
         var web3Provider = new HookedWeb3Provider({
           //host: "https://rinkeby.infura.io/",
-		  host: "http://localhost/",
+		  host: "https://ropsten.infura.io/",
+		  //host: "http://localhost/",
           transaction_signer: keystore
         });
 
@@ -68,7 +69,7 @@
         password: password,
         seedPhrase: document.getElementById('seed').value,
         //random salt 
-        hdPathString: "m/44'/6'/0'"    
+        hdPathString: "m/44'/60'/0'/0"    
       }, function (err, ks) {
 
         global_keystore = ks
@@ -97,7 +98,7 @@
         password: password,
         seedPhrase: randomSeed,
         //random salt 
-        hdPathString: "m/44'/6'/0'"
+        hdPathString: "m/44'/60'/0'/0"
       }, function (err, ks) {
 
         global_keystore = ks
