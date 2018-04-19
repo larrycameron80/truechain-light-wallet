@@ -128,6 +128,8 @@
         web3.eth.sendTransaction({from: fromAddr, to: toAddr, value: value, gasPrice: gasPrice, gas: gas}, function (err, txhash) {
           console.log('error: ' + err)
           console.log('txhash: ' + txhash)
+		  
+		  document.getElementById('info').innerHTML += '<div>' + txhash  + '</div>'
         })
       }
 
@@ -146,6 +148,9 @@
         var callback = function(err, txhash) {
           console.log('error: ' + err)
           console.log('txhash: ' + txhash)
+		  
+		  document.getElementById('info').innerHTML += '<div>' + err  + '</div>'
+		  
         }
         args.push(callback)
         contract[functionName].apply(this, args)
@@ -162,7 +167,7 @@
     <div id="addr"></div>
     <div><button onClick='getBalances()'>Refresh</button></div>
     <h2>Send Ether</h2>
-    <div>From: <select id="sendFrom"></select><input type="text" size="40" id="sendFrom"></input></div>
+    <div>From: <select id="sendFrom"></select></div>
     <div>To: <input type="text" size="40" id="sendTo"></input></div>
     <div>Ether: <input type="text" id="sendValueAmount"></div>
     <div><button onclick="sendEth()">Send Ether</button></div>
@@ -176,6 +181,7 @@
     <div>Function Arguments: <input type="text" size="40" id="functionArgs"></input></div>
     <div>Value (Ether): <input type="text" id="sendValueAmount"></div>
     <div><button onclick="functionCall()">Call Function</button></div>
+	<div id="info"></div>
 
   </body>
 </html>
