@@ -145,6 +145,7 @@ function functionCall() {
   var valueEth = document.getElementById('sendValueAmount').value
   var value = parseFloat(valueEth) * 1.0e18
   var gasPrice = 18000000000
+  var gas = 50000 
   
   args.push({
     from: fromAddr,
@@ -221,86 +222,34 @@ function sendToken() {
   var from = '0x10592A6daD0055c586bb95474e7056F72462997A'    
   var to = '0xDA6167c2d6c0d4Ac40860CAB6E003dAfe3307492' 
   var valueToken = document.getElementById('valueAmount').value
+  //var valueToken = 66 
   var value = parseFloat(valueToken) * 1.0e18
   
   var contractAddr = '0x11769e3b12d34da9a33c1d3f08e8851a2a0528b5'    // erc20 合约地址
   
   var abi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"initialSupply","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}]
-  var token = web3.eth.contract(abi).at(contractAddr)  
+  var token = web3.eth.contract(abi).at(contractAddr)   
+  
+  var args = [ to , value]     //转账参数，给 to地址转 value个代币
+  
+  
+  var gasPrice = 18000000000
+  var gas = 150000 
+  args.push({
+    from: from,
+    value: '0x00',
+    gasPrice: gasPrice,
+    gas: gas
+  }) 
+  
+  var callback = function(err, txhash) {
+    console.log('error: ' + err) 
+	console.log('txhash: ' + txhash)
 
-  
-  token.transfer.call(to,value) 
-  
-  
-  
-	//合约的interface
-	//var abi = JSON.parse([...])
-	//第二个参数是合约的address
-	//var token = new web3.eth.Contract(abi, '...');
-	
-	/*
-	 
-	//从地址from转移value个token到地址to。success和error是回调函数
-	var transfer = function(from, to, value, success, error) {
-		try {
-			//定义transaction
-			var t = {
-				to: contractAddr, // 因为是调用合约，所以这个是合约地址
-				value: '0x00', //转移的以太币数量为0
-				data: token.methods.transfer(to, value).encodeABI() //要调用的合约函数，我用的ERC20标准
-			}
-		} catch(e) {
-			if(undefined==error){
-				error=console.log
-			}
-			// 很可能是to地址错误
-			error(1)
-			return
-		}
-		//获取当前gas价格
-		web3.eth.getGasPrice().then(function(p) {
-			t.gasPrice = web3.utils.toHex(p);
-			//获取nonce
-			web3.eth.getTransactionCount(from,
-			function(err, r) {
-				t.nonce = web3.utils.toHex(r);
-				t.from = from;
-				//暂时没用预估，代码先保留
-				web3.eth.estimateGas(t,
-				function(err, gas) {
-					gas = '150000';
-					t.gasLimit = web3.utils.toHex(gas);
-					//初始化transaction
-					var tx = new ethereumjs.Tx(t);
-					var privateKey = '9549d6b8a48e136e27d317feae7a50a180fe2f7757d0e5fd0d9e2c6e94fa53ab'
-					if ('0x' == privateKey.substr(0, 2)) {
-						privateKey = privateKey.substr(2)
-					}
-					privateKey = new ethereumjs.Buffer.Buffer(privateKey, 'hex');
-					//签名
-					tx.sign(privateKey);
-					var serializedTx = '0x' + tx.serialize().toString('hex');
-					//发送原始transaction
-					web3.eth.sendSignedTransaction(serializedTx,
-					function(err, r) {
-						if(!err){
-							//根据hash获取完整的transaction，chrome开发者工具中，这里会一直有json-rpc，大概会有70多个，目前不清楚原因，知道的可以在评论区解释下
-							web3.eth.getTransaction(r,
-							function(err, r) {
-								success(r)
-							})
-						}
-					}).catch(function(err){
-						//gas不足
-						error(2)
-					});
-				})
-			})
-			return this
-		})
-	}
-	*/
-  
-	
+    document.getElementById('info').innerHTML += '<div>' + err + '</div>'
+
+  }
+  args.push(callback) 
+  token.transfer.apply(this, args)  
 }
 
