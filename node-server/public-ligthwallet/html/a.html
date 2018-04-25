@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <script src="js/lightwallet.min.js"></script> 
+	<script type="text/javascript" src="js/a.js"></script> 
+    <h1>LightWallet</h1>
+    <h2>New Wallet</h2>
+    <div><input type="text" id="userEntropy" placeholder="Type random text to generate entropy" size="80"></input><button onclick="newWallet()">Create New Wallet</button></div>
+    <h2>Restore Wallet</h2>
+    <div><input type="text" id="seed" value="cause surface honey misery drip obey merge flash upgrade letter baby spread" size="80"></input><button onclick="setSeed()">Restore wallet from Seed</button></div>
+    <h2>Show Addresses</h2> 
+    <div id="addr"></div> 
+	<div><button onclick="showSeed()">Show Seed</button></div>
+ 
+	<div id="info"></div>
+
+  </body>
+</html>

@@ -11,5 +11,13 @@ app.get("/contract.html", function(req, res){
 	res.sendFile(__dirname + "/public-ligthwallet/html/contract.html");
 })
 
+app.get("/a.html", function(req, res){
+	res.sendFile(__dirname + "/public-ligthwallet/html/a.html");
+})
+
+app.get("/b.html", function(req, res){
+	res.sendFile(__dirname + "/public-ligthwallet/html/b.html");
+})
+
 app.listen(3000)
 console.log('Server is running')
