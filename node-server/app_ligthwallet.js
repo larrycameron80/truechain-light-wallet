@@ -19,5 +19,9 @@ app.get("/b.html", function(req, res){
 	res.sendFile(__dirname + "/public-ligthwallet/html/b.html");
 })
 
+app.get("/c.html", function(req, res){
+	res.sendFile(__dirname + "/public-ligthwallet/html/c.html");
+})
+
 app.listen(3000)
 console.log('Server is running')
