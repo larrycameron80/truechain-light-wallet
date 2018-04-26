@@ -1,5 +1,23 @@
-# light-wallet-train
-light-wallet-train
+# light-wallet  
 
+- 2018-03-31    	建立github仓库
 
-2018-04-08		使用koa2框架，ejs模版方式获取账号余额（入口文件为 index.js）
+- 2018-04-01		增加test.js，连接以太坊私链测试网，显示矿工账号的账户余额
+
+- 2018-04-08		使用koa2框架，ejs模版方式获取账号余额（入口文件为 index.js）
+
+- 2018-04-15		使用LightWallet库，在web客户端创建HD钱包。服务端的启动方式为 node app.js
+
+- 2018-04-16     	导入钱包的时候，可以选择路径 hdPathString
+
+- 2018-04-17        调整目录结构。 node-server 目录下存放 node-server 服务端代码；app-src 前端源代码；dist    安卓、IOS安装包；doc   项目文档资料
+
+- 2018-04-17		找到另外一个开源版本的ligthwallet，在这个的基础上进行代码整合
+
+- 2018-04-18		重新配置开发环境。允许通过修改URL来连接私链，以太坊rinkeby测试链，ropsten测试链，以太坊正式网
+
+- 2018-04-19        使用ligthwallet来重新调整前端代码。增加错误信息输出。
+
+- 2018-04-24		完成了ERC20代币的资产余额展示
+
+- 2018-04-25		完成了ERC20代币的转账功能
