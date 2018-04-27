@@ -259,6 +259,30 @@ function sendToken() {
     var contractAddr = '0x84b8b3370edddbace3ddbd85165ffc97e4549db7'    // ropsten - HONG   
  	
 	///////////////////////////////////////
+	var serialized_keystore = localStorage.getItem('keystore'); 
+	var keystore = lightwallet.keystore.deserialize(serialized_keystore) //将序列号的keystore转换为对象  
+
+	var password = '';
+	if (password == '') {
+		password = prompt('Enter password to retrieve addresses', 'Password');
+	}	
+	
+	keystore.keyFromPassword(password, function (err, pwDerivedKey) {
+		//console.log(pwDerivedKey) ;
+		if(err){
+			console(err) ;
+		}else{
+			var totalAddresses = 1;
+			keystore.generateNewAddress(pwDerivedKey, totalAddresses);
+			var addresses = keystore.getAddresses();
+			var address = addresses[0];
+			console.log(address) ; 
+			privateKey = keystore.exportPrivateKey(address, pwDerivedKey);
+			console.log('privateKey' +privateKey);
+		}
+	});
+	
+	//////////////////////////////////////////////////
 	var web3Provider = new HookedWeb3Provider({
 		//host: "http://localhost:8545", 				// 私链 
 		//host: "https://rinkeby.infura.io/",		// 以太坊测试  
@@ -278,11 +302,9 @@ function sendToken() {
 					nonce: web3.toHex(tx_params.nonce),
 					data: web3.toHex(tx_params.data)
 				};
-				//console.log('tx_params_data: ' + tx_params.data)
+				console.log('tx_params_data: ' + tx_params.data)
 
-				var tx = new ethereumjs.Tx(rawTx);
-				var privateKey = '9549d6b8a48e136e27d317feae7a50a180fe2f7757d0e5fd0d9e2c6e94fa53ab';
-				//var privateKey =  'c586c9e6cce80a98e3727b5296e193acb5204dac0123e2a1ed62a3b63962ea70';     //imtoken
+				var tx = new ethereumjs.Tx(rawTx);  
 				privateKey = new ethereumjs.Buffer.Buffer(privateKey, 'hex');
 
 				tx.sign(privateKey);
@@ -293,14 +315,11 @@ function sendToken() {
 		}
 	});
 
-	web3.setProvider(web3Provider);	
+	var web3 = new Web3(web3Provider);	  
 	//////////////////////////////////////////////////
 	
 	var MyContract = web3.eth.contract(abi); 
-	var myContractInstance = MyContract.at(contractAddr);
-	
-	// name = myContractInstance.name()					// 代币全称
-	// console.log('name:'+name);  
+	var myContractInstance = MyContract.at(contractAddr); 
  
 	toAddr = toAddr.substring(2);
 	amount = web3.fromDecimal(amount);
