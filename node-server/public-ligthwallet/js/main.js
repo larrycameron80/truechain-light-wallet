@@ -3,9 +3,9 @@ var global_keystore;
 
 function setWeb3Provider(keystore) {
   var web3Provider = new HookedWeb3Provider({
-    host: "http://localhost:8545", 				// 私链 
+    //host: "http://localhost:8545", 				// 私链 
     //host: "https://rinkeby.infura.io/",		// 以太坊测试  
-    //host: "https://ropsten.infura.io/",		// 以太坊测试 (ropsten)
+    host: "https://ropsten.infura.io/",		// 以太坊测试 (ropsten)
     transaction_signer: keystore
   });
 
@@ -114,6 +114,11 @@ function showSeed() {
 }
 
 function sendEth() {
+  var serialized_keystore =   localStorage.getItem('keystore')   
+  keystore = lightwallet.keystore.deserialize(serialized_keystore)    //将序列号的keystore转换为对象 
+  
+  setWeb3Provider(keystore)	
+  
   var fromAddr = document.getElementById('sendFrom').value
   var toAddr = document.getElementById('sendTo').value
   var valueEth = document.getElementById('sendValueAmount').value
@@ -202,7 +207,7 @@ function addToken() {
 
   var fromAddr = '0x10592A6daD0055c586bb95474e7056F72462997A'
 
-  var contractAddr = '0x11769e3b12d34da9a33c1d3f08e8851a2a0528b5'    // erc20 合约地址
+  var contractAddr = '0x84b8b3370edddbace3ddbd85165ffc97e4549db7'    // erc20 合约地址
   
   var abi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"initialSupply","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}]
   var contract = web3.eth.contract(abi).at(contractAddr)  
@@ -220,14 +225,19 @@ function addToken() {
 // 调用成功，返回 tx
 function sendToken() {
   var from = '0x10592A6daD0055c586bb95474e7056F72462997A'    
-  var to = '0xDA6167c2d6c0d4Ac40860CAB6E003dAfe3307492' 
-  var valueToken = document.getElementById('valueAmount').value
-  //var valueToken = 66 
+  var to = '0x5833fa6053e6e781eafb8695d63d90f6b3571e5e' 
+  //var valueToken = document.getElementById('valueAmount').value
+  var valueToken = 1 
   var value = parseFloat(valueToken) * 1.0e18
   
-  var contractAddr = '0x11769e3b12d34da9a33c1d3f08e8851a2a0528b5'    // erc20 合约地址
+  var contractAddr = '0x84b8b3370edddbace3ddbd85165ffc97e4549db7'    // ropsten - HONG 
   
   var abi = [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"initialSupply","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}]
+  
+  var serialized_keystore =   localStorage.getItem('keystore')   
+  keystore = lightwallet.keystore.deserialize(serialized_keystore)    //将序列号的keystore转换为对象  
+  setWeb3Provider(keystore)	  
+  
   var token = web3.eth.contract(abi).at(contractAddr)   
   
   var args = [ to , value]     //转账参数，给 to地址转 value个代币
@@ -237,6 +247,7 @@ function sendToken() {
   var gas = 150000 
   args.push({
     from: from,
+	to: contractAddr,
     value: '0x00',
     gasPrice: gasPrice,
     gas: gas
